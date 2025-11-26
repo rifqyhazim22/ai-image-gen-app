@@ -1,5 +1,4 @@
 {
-  "framework": "static",
   "outputDirectory": "web_dist",
   "buildCommand": "echo \"skip build, using committed web_dist\"",
   "installCommand": "echo \"skip install\"",
