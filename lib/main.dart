@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'dart:ui';
+import 'dart:io';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'package:flutter/material.dart';
@@ -34,6 +35,8 @@ Gradient appBackground(Brightness brightness) {
 }
 
 Future<void> main() async {
+  // Force IPv4 lookup to avoid resolver issues on some networks.
+  HttpOverrides.global = _ForceIPv4HttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
 
   if (supabaseUrl.isEmpty || supabaseAnonKey.isEmpty) {
@@ -45,6 +48,15 @@ Future<void> main() async {
   await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
 
   runApp(const MyApp());
+}
+
+/// Forces DNS lookups to return IPv4 addresses to avoid OS resolver quirks.
+class _ForceIPv4HttpOverrides extends HttpOverrides {
+  @override
+  Future<List<InternetAddress>> lookup(String host,
+      {InternetAddressType type = InternetAddressType.any}) {
+    return InternetAddress.lookup(host, type: InternetAddressType.IPv4);
+  }
 }
 
 class MyApp extends StatefulWidget {
