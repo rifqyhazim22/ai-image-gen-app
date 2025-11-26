@@ -36,3 +36,6 @@ android/app/release/
 
 # Release folder keeps artifacts; do not ignore
 !/release/
+
+# Vercel project settings
+.vercel/
