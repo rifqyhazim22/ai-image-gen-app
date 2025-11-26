@@ -714,6 +714,10 @@ class _HomePageState extends State<HomePage> {
               ),
             ],
           ),
+          if (kIsWeb) ...[
+            const SizedBox(height: 12),
+            _buildDownloadPanel(theme),
+          ],
           const SizedBox(height: 12),
           _buildChatFeed(theme),
           const SizedBox(height: 16),
@@ -780,6 +784,69 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildDownloadPanel(ThemeData theme) {
+    const releaseTag = 'v0.1.0';
+    const baseUrl = 'https://github.com/rifqyhazim22/ai-image-gen-app/releases/download/$releaseTag';
+    return Glass(
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Download apps',
+              style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
+            ),
+            const SizedBox(height: 8),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                FilledButton.tonalIcon(
+                  onPressed: () => launchUrlString(
+                    '$baseUrl/ai-image-gen-app.apk',
+                    mode: LaunchMode.externalApplication,
+                  ),
+                  icon: const Icon(Icons.android),
+                  label: const Text('Android APK'),
+                ),
+                FilledButton.tonalIcon(
+                  onPressed: () => launchUrlString(
+                    '$baseUrl/ai-image-gen-app-macos.dmg',
+                    mode: LaunchMode.externalApplication,
+                  ),
+                  icon: const Icon(Icons.apple),
+                  label: const Text('macOS DMG'),
+                ),
+                FilledButton.tonalIcon(
+                  onPressed: () => launchUrlString(
+                    '$baseUrl/ai-image-gen-app-macos.zip',
+                    mode: LaunchMode.externalApplication,
+                  ),
+                  icon: const Icon(Icons.laptop_mac),
+                  label: const Text('macOS ZIP'),
+                ),
+                FilledButton.tonalIcon(
+                  onPressed: () => launchUrlString(
+                    'https://github.com/rifqyhazim22/ai-image-gen-app/releases',
+                    mode: LaunchMode.externalApplication,
+                  ),
+                  icon: const Icon(Icons.download_for_offline),
+                  label: const Text('All downloads'),
+                ),
+              ],
+            ),
+            const SizedBox(height: 6),
+            Text(
+              'iOS: gunakan XCArchive di rilis untuk export/sign. Web bundle tersedia di rilis.',
+              style: theme.textTheme.bodySmall,
+            ),
+          ],
+        ),
       ),
     );
   }
