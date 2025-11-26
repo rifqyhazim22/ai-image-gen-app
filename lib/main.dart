@@ -33,6 +33,39 @@ Gradient appBackground(Brightness brightness) {
   );
 }
 
+Widget appLogo({double size = 36}) {
+  return Container(
+    width: size,
+    height: size,
+    decoration: BoxDecoration(
+      shape: BoxShape.circle,
+      gradient: const LinearGradient(
+        colors: [Color(0xFF7B5CFF), Color(0xFF43DDE6)],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      ),
+      boxShadow: [
+        BoxShadow(
+          color: const Color(0xFF7B5CFF).withOpacity(0.25),
+          blurRadius: 8,
+          offset: const Offset(0, 4),
+        ),
+      ],
+    ),
+    child: Center(
+      child: Text(
+        'AI',
+        style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.w800,
+          fontSize: size * 0.38,
+          letterSpacing: 0.5,
+        ),
+      ),
+    ),
+  );
+}
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -124,14 +157,10 @@ class _MyAppState extends State<MyApp> {
             child: Center(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                children: const [
-                  CircleAvatar(
-                    radius: 32,
-                    backgroundColor: Color(0x334276F5),
-                    child: Icon(Icons.auto_awesome, size: 28),
-                  ),
-                  SizedBox(height: 12),
-                  Text(
+                children: [
+                  appLogo(size: 64),
+                  const SizedBox(height: 12),
+                  const Text(
                     'AI Image Gen',
                     style: TextStyle(fontWeight: FontWeight.w800, fontSize: 22),
                   ),
@@ -282,6 +311,8 @@ class _HomePageState extends State<HomePage> {
   int _libraryOffset = 0;
   static const int _libraryPageSize = 30;
   static const String _legacyCombinedGroup = 'legacy-combined';
+  String? _nickname;
+  bool _askedNickname = false;
 
   @override
   void initState() {
@@ -290,6 +321,7 @@ class _HomePageState extends State<HomePage> {
     _loadHistory();
     _gallery.clear();
     _groupId = null;
+    _loadNickname();
   }
 
   Map<String, Map<String, String>> get l10n => {
@@ -365,9 +397,71 @@ class _HomePageState extends State<HomePage> {
           'download': 'Unduh',
           'share': 'Bagikan',
         },
-      };
+  };
 
   String t(String key) => l10n[_lang]?[key] ?? l10n['en']![key]!;
+
+  Future<void> _loadNickname() async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = 'nickname_${widget.session.user.id}';
+    final saved = prefs.getString(key);
+    if (!mounted) return;
+    if (saved != null && saved.isNotEmpty) {
+      setState(() => _nickname = saved);
+    } else if (!_askedNickname) {
+      _askedNickname = true;
+      await Future.delayed(Duration.zero, () => _promptNickname(key));
+    }
+  }
+
+  Future<void> _promptNickname(String key) async {
+    final controller = TextEditingController(text: _nickname ?? '');
+    final result = await showDialog<String>(
+      context: context,
+      builder: (context) {
+        final theme = Theme.of(context);
+        return AlertDialog(
+          title: const Text('Set your nickname'),
+          content: TextField(
+            controller: controller,
+            autofocus: true,
+            decoration: const InputDecoration(
+              labelText: 'Nickname',
+              hintText: 'How should we call you?',
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(
+                'Cancel',
+                style: theme.textTheme.bodyMedium,
+              ),
+            ),
+            FilledButton(
+              onPressed: () {
+                final text = controller.text.trim();
+                if (text.isEmpty) return;
+                Navigator.of(context).pop(text);
+              },
+              child: const Text('Save'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (result != null && result.trim().isNotEmpty) {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(key, result.trim());
+      if (mounted) setState(() => _nickname = result.trim());
+    }
+  }
+
+  Future<void> _editNickname() async {
+    final key = 'nickname_${widget.session.user.id}';
+    await _promptNickname(key);
+  }
 
   Future<void> _loadHistory({bool loadMore = false}) async {
     setState(() {
@@ -575,17 +669,13 @@ class _HomePageState extends State<HomePage> {
           padding: const EdgeInsets.symmetric(horizontal: 12),
           child: Row(
             children: [
-              CircleAvatar(
-                radius: 18,
-                backgroundColor: theme.colorScheme.primary.withOpacity(0.15),
-                child: const Icon(Icons.auto_awesome, size: 18),
-              ),
+              appLogo(size: 36),
               const SizedBox(width: 10),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Hi, ${widget.session.user.email ?? 'creator'}',
+                    'Hi, ${_nickname ?? widget.session.user.email ?? 'creator'}',
                     style: theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w800,
                       letterSpacing: 0.3,
@@ -601,13 +691,18 @@ class _HomePageState extends State<HomePage> {
               ),
             ],
           ),
-        ),
-        actions: [
-          IconButton(
-            tooltip: '${t('lang_toggle')} 🌐',
-            onPressed: () {
-              setState(() {
-                _lang = _lang == 'en' ? 'id' : 'en';
+          ),
+          actions: [
+            IconButton(
+              tooltip: 'Edit nickname',
+              onPressed: _editNickname,
+              icon: const Icon(Icons.edit),
+            ),
+            IconButton(
+              tooltip: '${t('lang_toggle')} 🌐',
+              onPressed: () {
+                setState(() {
+                  _lang = _lang == 'en' ? 'id' : 'en';
               });
               widget.onLangChanged(_lang);
             },
