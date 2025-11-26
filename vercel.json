@@ -1,9 +1,9 @@
 {
-  "builds": [
-    { "src": "web_dist/**/*", "use": "@vercel/static" }
-  ],
-  "routes": [
-    { "handle": "filesystem" },
-    { "src": "/(.*)", "dest": "/index.html" }
+  "framework": "static",
+  "outputDirectory": "web_dist",
+  "buildCommand": "echo \"skip build, using committed web_dist\"",
+  "installCommand": "echo \"skip install\"",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
