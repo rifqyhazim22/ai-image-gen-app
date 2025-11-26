@@ -1,0 +1,38 @@
+# Flutter / Dart
+.dart_tool/
+.packages
+.flutter-plugins
+.flutter-plugins-dependencies
+.metadata
+
+# Build outputs
+build/
+ios/Flutter/App.framework
+ios/Flutter/Flutter.framework
+ios/Flutter/Generated.xcconfig
+ios/Flutter/ephemeral/
+android/.gradle/
+android/app/debug/
+android/app/profile/
+android/app/release/
+
+# Platform artifacts (allow in /release)
+*.ipa
+*.apk
+*.aab
+*.dSYM
+!/release/*.ipa
+!/release/*.apk
+!/release/*.aab
+!/release/*.zip
+!/release/*.dmg
+
+# IDE
+.idea/
+.vscode/
+
+# Mac
+.DS_Store
+
+# Release folder keeps artifacts; do not ignore
+!/release/
