@@ -1,0 +1,11 @@
+release
+build
+android
+ios
+macos
+windows
+linux
+.dart_tool
+.packages
+.idea
+.vscode
