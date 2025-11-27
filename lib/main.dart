@@ -18,6 +18,174 @@ const supabaseAnonKey = String.fromEnvironment(
   'SUPABASE_ANON_KEY',
   defaultValue: '',
 );
+
+const Map<String, Map<String, String>> translations = {
+  'en': {
+    'title': 'AI Image Gen',
+    'welcome_back': 'Welcome back',
+    'create_account': 'Create your account',
+    'email': 'Email',
+    'password': 'Password',
+    'login': 'Login',
+    'signup': 'Sign up',
+    'need_account': 'Need an account? Sign up',
+    'have_account': 'Have an account? Login',
+    'auth_failed':
+        'Auth failed, please try again. If this keeps happening, wait 1-2 minutes and retry.',
+    'auth_error': 'Auth error',
+    'lang_toggle': 'Switch language',
+    'theme_toggle': 'Toggle theme',
+    'upload_title': 'Upload portrait',
+    'choose_photo': 'Choose Photo',
+    'upload_hint': 'JPG/PNG up to 5MB. Stored privately.',
+    'prompt_label': 'Prompt',
+    'prompt_hint': 'Describe the image you want',
+    'hero_title': 'Create & chat your images ✍️',
+    'keep_history': 'Keep previous results when generating',
+    'mode_label': 'Mode',
+    'mode_text': 'Text → Image',
+    'mode_edit': 'Text + Image (Edit)',
+    'mode_text_hint': 'Prompt only, no upload required.',
+    'mode_edit_hint': 'Upload required; prompt guides the edit.',
+    'aspect_ratio': 'Aspect ratio',
+    'quality': 'Quality',
+    'quality_low': 'Low',
+    'quality_medium': 'Medium',
+    'quality_high': 'High',
+    'generate': 'Generate scenes',
+    'clear_current': 'Clear current',
+    'clear_all': 'Clear all',
+    'results_title': 'Results',
+    'generating': 'Generating your images...',
+    'results_empty': 'Results will appear here after generation.',
+    'history_title': 'History',
+    'history_empty': 'No history yet.',
+    'copy_link_success': 'Link copied to clipboard',
+    'tab_chat': 'Chat',
+    'tab_history': 'History',
+    'tab_library': 'Library',
+    'latest_session': 'Latest session',
+    'new_session': 'New session',
+    'all_sessions': 'All sessions',
+    'open': 'Open',
+    'open_link': 'Open link',
+    'copy': 'Copy',
+    'delete': 'Delete',
+    'refresh': 'Refresh',
+    'load_more': 'Load more',
+    'download': 'Download',
+    'share': 'Share',
+    'check_email': 'Check your email to verify your account, then try login.',
+    'hi': 'Hi',
+    'subtitle': 'Chat your visuals into life',
+    'edit_nickname': 'Edit nickname',
+    'set_nickname': 'Set your nickname',
+    'nickname_label': 'Nickname',
+    'nickname_hint': 'How should we call you?',
+    'cancel': 'Cancel',
+    'save': 'Save',
+    'file_too_large': 'File too large (>5MB). Please pick a smaller image.',
+    'user_not_signed_in': 'User not signed in',
+    'upload_original_failed': 'Upload original failed',
+    'choose_image_edit': 'Please choose an image for edit mode',
+    'items': 'item(s)',
+    'view': 'View',
+    'logout': 'Logout',
+    'download_apps': 'Download apps',
+    'download_app': 'Download app',
+    'github': 'GitHub',
+    'android_apk': 'Android APK',
+    'macos_dmg': 'macOS DMG',
+    'macos_zip': 'macOS ZIP',
+    'all_downloads': 'All downloads',
+    'download_note':
+        'iOS: use the XCArchive in release to export/sign. Web bundle is available too.',
+  },
+  'id': {
+    'title': 'AI Image Gen',
+    'welcome_back': 'Selamat datang kembali',
+    'create_account': 'Buat akunmu',
+    'email': 'Email',
+    'password': 'Kata sandi',
+    'login': 'Masuk',
+    'signup': 'Daftar',
+    'need_account': 'Belum punya akun? Daftar',
+    'have_account': 'Sudah punya akun? Masuk',
+    'auth_failed':
+        'Gagal masuk, coba lagi. Jika terus terjadi, tunggu 1-2 menit lalu coba ulang.',
+    'auth_error': 'Kesalahan autentikasi',
+    'lang_toggle': 'Ganti bahasa',
+    'theme_toggle': 'Ganti tema',
+    'upload_title': 'Unggah foto',
+    'choose_photo': 'Pilih Foto',
+    'upload_hint': 'JPG/PNG max 5MB. Disimpan privat.',
+    'prompt_label': 'Prompt',
+    'prompt_hint': 'Deskripsikan gambar yang diinginkan',
+    'hero_title': 'Buat & obrolkan visualmu ✍️',
+    'keep_history': 'Simpan hasil sebelumnya saat generate',
+    'mode_label': 'Mode',
+    'mode_text': 'Teks → Gambar',
+    'mode_edit': 'Teks + Gambar (Edit)',
+    'mode_text_hint': 'Hanya prompt, tidak perlu unggah.',
+    'mode_edit_hint': 'Unggah gambar; prompt jadi panduan edit.',
+    'aspect_ratio': 'Rasio aspek',
+    'quality': 'Kualitas',
+    'quality_low': 'Rendah',
+    'quality_medium': 'Sedang',
+    'quality_high': 'Tinggi',
+    'generate': 'Generate',
+    'clear_current': 'Hapus batch ini',
+    'clear_all': 'Hapus semua',
+    'results_title': 'Hasil',
+    'generating': 'Sedang membuat gambar...',
+    'results_empty': 'Hasil akan muncul setelah generate.',
+    'history_title': 'Riwayat',
+    'history_empty': 'Belum ada riwayat.',
+    'copy_link_success': 'Link tersalin',
+    'tab_chat': 'Chat',
+    'tab_history': 'Riwayat',
+    'tab_library': 'Galeri',
+    'latest_session': 'Sesi terbaru',
+    'new_session': 'Sesi baru',
+    'all_sessions': 'Semua sesi',
+    'open': 'Buka',
+    'open_link': 'Buka link',
+    'copy': 'Salin',
+    'delete': 'Hapus',
+    'refresh': 'Muat ulang',
+    'load_more': 'Muat lagi',
+    'download': 'Unduh',
+    'share': 'Bagikan',
+    'check_email': 'Cek email kamu untuk verifikasi, lalu login kembali.',
+    'hi': 'Halo',
+    'subtitle': 'Chat visualmu jadi nyata',
+    'edit_nickname': 'Ubah nama panggilan',
+    'set_nickname': 'Atur nama panggilan',
+    'nickname_label': 'Nama panggilan',
+    'nickname_hint': 'Panggilan apa yang kamu mau?',
+    'cancel': 'Batal',
+    'save': 'Simpan',
+    'file_too_large': 'File terlalu besar (>5MB). Pilih gambar lebih kecil.',
+    'user_not_signed_in': 'Pengguna belum masuk',
+    'upload_original_failed': 'Gagal mengunggah gambar asli',
+    'choose_image_edit': 'Pilih gambar dulu untuk mode edit',
+    'items': 'item',
+    'view': 'Lihat',
+    'logout': 'Keluar',
+    'download_apps': 'Unduh aplikasi',
+    'download_app': 'Unduh aplikasi',
+    'github': 'GitHub',
+    'android_apk': 'APK Android',
+    'macos_dmg': 'macOS DMG',
+    'macos_zip': 'macOS ZIP',
+    'all_downloads': 'Semua unduhan',
+    'download_note':
+        'iOS: gunakan XCArchive di rilis untuk export/sign. Paket web juga tersedia.',
+  },
+};
+
+String translate(String lang, String key) =>
+    translations[lang]?[key] ?? translations['en']![key]!;
 Gradient appBackground(Brightness brightness) {
   if (brightness == Brightness.dark) {
     return const LinearGradient(
@@ -94,6 +262,8 @@ class _MyAppState extends State<MyApp> {
   Session? _session;
   bool _splashDone = false;
 
+  String t(String key) => translate(_lang, key);
+
   @override
   void initState() {
     super.initState();
@@ -160,9 +330,9 @@ class _MyAppState extends State<MyApp> {
                 children: [
                   appLogo(size: 64),
                   const SizedBox(height: 12),
-                  const Text(
-                    'AI Image Gen',
-                    style: TextStyle(fontWeight: FontWeight.w800, fontSize: 22),
+                  Text(
+                    t('title'),
+                    style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 22),
                   ),
                 ],
               ),
@@ -324,82 +494,7 @@ class _HomePageState extends State<HomePage> {
     _loadNickname();
   }
 
-  Map<String, Map<String, String>> get l10n => {
-        'en': {
-          'title': 'AI Image Gen',
-          'lang_toggle': 'Switch language',
-          'theme_toggle': 'Toggle theme',
-          'upload_title': 'Upload portrait',
-          'choose_photo': 'Choose Photo',
-          'upload_hint': 'JPG/PNG up to 5MB. Stored privately.',
-          'prompt_label': 'Prompt',
-          'prompt_hint': 'Describe the image you want',
-          'keep_history': 'Keep previous results when generating',
-          'mode_label': 'Mode',
-          'mode_text': 'Text → Image',
-          'mode_edit': 'Text + Image (Edit)',
-          'generate': 'Generate scenes',
-          'clear_current': 'Clear current',
-          'clear_all': 'Clear all',
-          'results_title': 'Results',
-          'generating': 'Generating your images...',
-          'results_empty': 'Results will appear here after generation.',
-          'history_title': 'History',
-          'history_empty': 'No history yet.',
-          'copy_link_success': 'Link copied to clipboard',
-          'tab_chat': 'Chat',
-          'tab_history': 'History',
-          'tab_library': 'Library',
-          'latest_session': 'Latest session',
-          'new_session': 'New session',
-          'open': 'Open',
-          'open_link': 'Open link',
-          'copy': 'Copy',
-          'delete': 'Delete',
-          'refresh': 'Refresh',
-          'load_more': 'Load more',
-          'download': 'Download',
-          'share': 'Share',
-        },
-        'id': {
-          'title': 'AI Image Gen',
-          'lang_toggle': 'Ganti bahasa',
-          'theme_toggle': 'Ganti tema',
-          'upload_title': 'Unggah foto',
-          'choose_photo': 'Pilih Foto',
-          'upload_hint': 'JPG/PNG max 5MB. Disimpan privat.',
-          'prompt_label': 'Prompt',
-          'prompt_hint': 'Deskripsikan gambar yang diinginkan',
-          'keep_history': 'Simpan hasil sebelumnya saat generate',
-          'mode_label': 'Mode',
-          'mode_text': 'Teks → Gambar',
-          'mode_edit': 'Teks + Gambar (Edit)',
-          'generate': 'Generate',
-          'clear_current': 'Hapus batch ini',
-          'clear_all': 'Hapus semua',
-          'results_title': 'Hasil',
-          'generating': 'Sedang membuat gambar...',
-          'results_empty': 'Hasil akan muncul setelah generate.',
-          'history_title': 'Riwayat',
-          'history_empty': 'Belum ada riwayat.',
-          'copy_link_success': 'Link tersalin',
-          'tab_chat': 'Chat',
-          'tab_history': 'Riwayat',
-          'tab_library': 'Galeri',
-          'latest_session': 'Sesi terbaru',
-          'new_session': 'Sesi baru',
-          'open': 'Buka',
-          'open_link': 'Buka link',
-          'copy': 'Salin',
-          'delete': 'Hapus',
-          'refresh': 'Muat ulang',
-          'load_more': 'Muat lagi',
-          'download': 'Unduh',
-          'share': 'Bagikan',
-        },
-  };
-
-  String t(String key) => l10n[_lang]?[key] ?? l10n['en']![key]!;
+  String t(String key) => translate(_lang, key);
 
   Future<void> _loadNickname() async {
     final prefs = await SharedPreferences.getInstance();
@@ -421,22 +516,22 @@ class _HomePageState extends State<HomePage> {
       builder: (context) {
         final theme = Theme.of(context);
         return AlertDialog(
-          title: const Text('Set your nickname'),
+          title: Text(t('set_nickname')),
           content: TextField(
             controller: controller,
             autofocus: true,
-            decoration: const InputDecoration(
-              labelText: 'Nickname',
-              hintText: 'How should we call you?',
+            decoration: InputDecoration(
+              labelText: t('nickname_label'),
+              hintText: t('nickname_hint'),
             ),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: Text(
-                'Cancel',
-                style: theme.textTheme.bodyMedium,
-              ),
+            child: Text(
+              t('cancel'),
+              style: theme.textTheme.bodyMedium,
+            ),
             ),
             FilledButton(
               onPressed: () {
@@ -444,7 +539,7 @@ class _HomePageState extends State<HomePage> {
                 if (text.isEmpty) return;
                 Navigator.of(context).pop(text);
               },
-              child: const Text('Save'),
+              child: Text(t('save')),
             ),
           ],
         );
@@ -493,7 +588,7 @@ class _HomePageState extends State<HomePage> {
           _history = [
             _GroupSummary(
               groupId: _legacyCombinedGroup,
-              primaryText: 'All sessions',
+              primaryText: t('all_sessions'),
               count: data.length,
               createdAt: latest ?? DateTime.now(),
             ),
@@ -531,7 +626,7 @@ class _HomePageState extends State<HomePage> {
       final bytes = await file.readAsBytes();
       if (bytes.length > _maxBytes) {
         setState(() {
-          _error = 'File too large (>5MB). Please pick a smaller image.';
+          _error = t('file_too_large');
         });
         return;
       }
@@ -550,7 +645,7 @@ class _HomePageState extends State<HomePage> {
     final userId = supabase.auth.currentUser?.id;
     if (userId == null) {
       setState(() {
-        _error = 'User not signed in';
+        _error = t('user_not_signed_in');
       });
       return;
     }
@@ -582,7 +677,7 @@ class _HomePageState extends State<HomePage> {
       });
     } catch (e) {
       setState(() {
-        _error = 'Upload original failed: $e';
+        _error = '${t('upload_original_failed')}: $e';
       });
     } finally {
       setState(() {
@@ -594,7 +689,7 @@ class _HomePageState extends State<HomePage> {
   Future<void> _generate() async {
     if (_mode == 'edit' && _picked == null) {
       setState(() {
-        _error = 'Please choose an image for edit mode';
+        _error = t('choose_image_edit');
       });
       return;
     }
@@ -675,14 +770,14 @@ class _HomePageState extends State<HomePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Hi, ${_nickname ?? widget.session.user.email ?? 'creator'}',
+                    '${t('hi')}, ${_nickname ?? widget.session.user.email ?? 'creator'}',
                     style: theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w800,
                       letterSpacing: 0.3,
                     ),
                   ),
                   Text(
-                    'Chat your visuals into life',
+                    t('subtitle'),
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: theme.colorScheme.onSurface.withOpacity(0.7),
                     ),
@@ -694,7 +789,7 @@ class _HomePageState extends State<HomePage> {
           ),
           actions: [
             IconButton(
-              tooltip: 'Edit nickname',
+              tooltip: t('edit_nickname'),
               onPressed: _editNickname,
               icon: const Icon(Icons.edit),
             ),
@@ -720,7 +815,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           IconButton(
-            tooltip: 'Logout',
+            tooltip: t('logout'),
             onPressed: widget.onLogout,
             icon: const Icon(Icons.logout),
           ),
@@ -775,7 +870,7 @@ class _HomePageState extends State<HomePage> {
             alignment: WrapAlignment.spaceBetween,
             children: [
               Text(
-                'Create & chat your images ✍️',
+                t('hero_title'),
                 style: theme.textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.w800,
                 ),
@@ -790,7 +885,7 @@ class _HomePageState extends State<HomePage> {
                         mode: LaunchMode.externalApplication,
                       ),
                       icon: const Icon(Icons.cloud_download_outlined),
-                      label: const Text('Download app'),
+                      label: Text(t('download_app')),
                     ),
                     OutlinedButton.icon(
                       onPressed: () => launchUrlString(
@@ -798,7 +893,7 @@ class _HomePageState extends State<HomePage> {
                         mode: LaunchMode.externalApplication,
                       ),
                       icon: const Icon(Icons.code),
-                      label: const Text('GitHub'),
+                      label: Text(t('github')),
                     ),
                   ],
                   OutlinedButton.icon(
@@ -885,7 +980,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildDownloadPanel(ThemeData theme) {
-    const releaseTag = 'v0.1.0';
+    const releaseTag = 'v0.1.2.1';
     const baseUrl = 'https://github.com/rifqyhazim22/ai-image-gen-app/releases/download/$releaseTag';
     return Glass(
       child: Padding(
@@ -894,7 +989,7 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Download apps',
+              t('download_apps'),
               style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
             ),
             const SizedBox(height: 8),
@@ -904,27 +999,27 @@ class _HomePageState extends State<HomePage> {
               children: [
                 FilledButton.tonalIcon(
                   onPressed: () => launchUrlString(
-                    '$baseUrl/ai-image-gen-app.apk',
+                    '$baseUrl/AI-Image-Gen-App.apk',
                     mode: LaunchMode.externalApplication,
                   ),
                   icon: const Icon(Icons.android),
-                  label: const Text('Android APK'),
+                  label: Text(t('android_apk')),
                 ),
                 FilledButton.tonalIcon(
                   onPressed: () => launchUrlString(
-                    '$baseUrl/ai-image-gen-app-macos.dmg',
+                    '$baseUrl/AI-Image-Gen-App.dmg',
                     mode: LaunchMode.externalApplication,
                   ),
                   icon: const Icon(Icons.apple),
-                  label: const Text('macOS DMG'),
+                  label: Text(t('macos_dmg')),
                 ),
                 FilledButton.tonalIcon(
                   onPressed: () => launchUrlString(
-                    '$baseUrl/ai-image-gen-app-macos.zip',
+                    '$baseUrl/AI-Image-Gen-App-mac.zip',
                     mode: LaunchMode.externalApplication,
                   ),
                   icon: const Icon(Icons.laptop_mac),
-                  label: const Text('macOS ZIP'),
+                  label: Text(t('macos_zip')),
                 ),
                 FilledButton.tonalIcon(
                   onPressed: () => launchUrlString(
@@ -932,13 +1027,13 @@ class _HomePageState extends State<HomePage> {
                     mode: LaunchMode.externalApplication,
                   ),
                   icon: const Icon(Icons.download_for_offline),
-                  label: const Text('All downloads'),
+                  label: Text(t('all_downloads')),
                 ),
               ],
             ),
             const SizedBox(height: 6),
             Text(
-              'iOS: gunakan XCArchive di rilis untuk export/sign. Web bundle tersedia di rilis.',
+              t('download_note'),
               style: theme.textTheme.bodySmall,
             ),
           ],
@@ -1221,8 +1316,8 @@ class _HomePageState extends State<HomePage> {
         const SizedBox(height: 8),
         Text(
           _mode == 'text'
-              ? 'Prompt only, no upload required.'
-              : 'Upload required; prompt guides the edit.',
+              ? t('mode_text_hint')
+              : t('mode_edit_hint'),
           style: theme.textTheme.bodySmall,
         ),
       ],
@@ -1272,7 +1367,7 @@ class _HomePageState extends State<HomePage> {
                 },
         ),
         const SizedBox(width: 4),
-        const Text('Keep history'),
+        Text(t('keep_history')),
       ],
     );
   }
@@ -1286,7 +1381,7 @@ class _HomePageState extends State<HomePage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Aspect ratio', style: theme.textTheme.bodySmall),
+        Text(t('aspect_ratio'), style: theme.textTheme.bodySmall),
         const SizedBox(height: 6),
         Wrap(
           spacing: 8,
@@ -1311,14 +1406,14 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildQualitySelector(ThemeData theme) {
     final options = [
-      {'label': 'Low', 'value': 'low'},
-      {'label': 'Medium', 'value': 'medium'},
-      {'label': 'High', 'value': 'high'},
+      {'label': t('quality_low'), 'value': 'low'},
+      {'label': t('quality_medium'), 'value': 'medium'},
+      {'label': t('quality_high'), 'value': 'high'},
     ];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Quality', style: theme.textTheme.bodySmall),
+        Text(t('quality'), style: theme.textTheme.bodySmall),
         const SizedBox(height: 6),
         Wrap(
           spacing: 8,
@@ -1432,7 +1527,7 @@ class _HomePageState extends State<HomePage> {
                   overflow: TextOverflow.ellipsis,
                 ),
                 subtitle: Text(
-                  '${h.count} item(s) • ${h.createdAt}',
+                  '${h.count} ${t('items')} • ${h.createdAt}',
                   style: theme.textTheme.bodySmall,
                 ),
                 trailing: Wrap(
@@ -1440,11 +1535,14 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     TextButton(
                       onPressed: () => _loadGroup(h.groupId),
-                      child: const Text('View'),
+                      child: Text(t('view')),
                     ),
                     TextButton(
                       onPressed: _deleting ? null : () => _deleteGroup(h.groupId),
-                      child: const Text('Delete', style: TextStyle(color: Colors.redAccent)),
+                      child: Text(
+                        t('delete'),
+                        style: const TextStyle(color: Colors.redAccent),
+                      ),
                     ),
                   ],
                 ),
@@ -2189,22 +2287,24 @@ class _AuthScreenState extends State<AuthScreen> {
   bool _loading = false;
   String? _error;
 
+  String t(String key) => translate(widget.lang, key);
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('AI Image Gen'),
+        title: Text(t('title')),
         actions: [
           IconButton(
-            tooltip: 'Lang 🌐',
+            tooltip: '${t('lang_toggle')} 🌐',
             onPressed: () {
               widget.onLangChanged(widget.lang == 'en' ? 'id' : 'en');
             },
             icon: const Icon(Icons.language),
           ),
           IconButton(
-            tooltip: 'Theme',
+            tooltip: t('theme_toggle'),
             onPressed: () {
               final next =
                   widget.themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
@@ -2229,18 +2329,18 @@ class _AuthScreenState extends State<AuthScreen> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Text(
-                      _isLogin ? 'Welcome back' : 'Create your account',
+                      _isLogin ? t('welcome_back') : t('create_account'),
                       style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800),
                     ),
                     const SizedBox(height: 12),
                     TextField(
                       controller: _emailController,
-                      decoration: const InputDecoration(labelText: 'Email'),
+                      decoration: InputDecoration(labelText: t('email')),
                     ),
                     const SizedBox(height: 8),
                     TextField(
                       controller: _passwordController,
-                      decoration: const InputDecoration(labelText: 'Password'),
+                      decoration: InputDecoration(labelText: t('password')),
                       obscureText: true,
                     ),
                     if (_error != null) ...[
@@ -2253,7 +2353,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     const SizedBox(height: 12),
                     FilledButton(
                       onPressed: _loading ? null : _submit,
-                      child: Text(_isLogin ? 'Login' : 'Sign up'),
+                      child: Text(_isLogin ? t('login') : t('signup')),
                     ),
                     TextButton(
                       onPressed: _loading
@@ -2264,7 +2364,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                 _error = null;
                               });
                             },
-                      child: Text(_isLogin ? 'Need an account? Sign up' : 'Have an account? Login'),
+                      child: Text(_isLogin ? t('need_account') : t('have_account')),
                     ),
                   ],
                 ),
@@ -2300,36 +2400,27 @@ class _AuthScreenState extends State<AuthScreen> {
         session = res.session;
         // Jika perlu konfirmasi email, session bisa null; coba login langsung.
         if (session == null && res.user != null) {
-          try {
-            final login = await supabase.auth.signInWithPassword(
-              email: email,
-              password: password,
-            );
-            session = login.session;
-          } on AuthException catch (e) {
-            setState(() {
-              _error = e.message.isNotEmpty
-                  ? e.message
-                  : 'Please check your email to confirm, or retry in a minute.';
-            });
-          }
+          setState(() {
+            _error = t('check_email');
+          });
+          return;
         }
       }
 
       if (session == null) {
         setState(() {
-          _error = 'Auth failed, please try again. If this keeps happening, wait 1-2 minutes and retry.';
+          _error = t('auth_failed');
         });
         return;
       }
       widget.onDone(session);
     } on AuthException catch (e) {
       setState(() {
-        _error = e.message.isNotEmpty ? e.message : 'Auth failed, please try again.';
+        _error = e.message.isNotEmpty ? e.message : t('auth_failed');
       });
     } catch (e) {
       setState(() {
-        _error = 'Auth error: $e';
+        _error = '${t('auth_error')}: $e';
       });
     } finally {
       setState(() {
