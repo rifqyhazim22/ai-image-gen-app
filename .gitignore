@@ -42,3 +42,4 @@ android/app/release/
 
 # Keep compiled web for Vercel static deploy
 !/web_dist/
+.vercel

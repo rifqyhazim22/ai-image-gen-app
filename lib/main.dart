@@ -12,11 +12,18 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:uuid/uuid.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-// Configure via --dart-define to keep secrets out of code.
-const supabaseUrl = String.fromEnvironment('SUPABASE_URL', defaultValue: '');
+// Configure via --dart-define; fall back to baked-in publishable/anon keys for deployed apps.
+const _fallbackSupabaseUrl = 'https://gutibpbuoigchxltzxbb.supabase.co';
+const _fallbackSupabaseAnonKey =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd1dGlicGJ1b2lnY2h4bHR6eGJiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMzODQ2NjMsImV4cCI6MjA3ODk2MDY2M30.XX-VHqVtSxJ0xrPFr57RaRTTQM8WnAh-TSQu1QK9x_w';
+
+const supabaseUrl = String.fromEnvironment(
+  'SUPABASE_URL',
+  defaultValue: _fallbackSupabaseUrl,
+);
 const supabaseAnonKey = String.fromEnvironment(
   'SUPABASE_ANON_KEY',
-  defaultValue: '',
+  defaultValue: _fallbackSupabaseAnonKey,
 );
 
 const Map<String, Map<String, String>> translations = {
@@ -236,12 +243,6 @@ Widget appLogo({double size = 36}) {
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  if (supabaseUrl.isEmpty || supabaseAnonKey.isEmpty) {
-    throw Exception(
-      'Set SUPABASE_URL and SUPABASE_ANON_KEY via --dart-define before running.',
-    );
-  }
 
   await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
 
