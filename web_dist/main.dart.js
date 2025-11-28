@@ -7756,7 +7756,7 @@ var $async$azD=A.r(function(a,b){if(a===1)return A.t(b,r)
 for(;;)switch(s){case 0:if($.Z==null)A.aC9()
 $.Z.toString
 s=2
-return A.m(A.ajr("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd1dGlicGJ1b2lnY2h4bHR6eGJiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMzODQ2NjMsImV4cCI6MjA3ODk2MDY2M30.XX-VHqVtSxJ0xrPFr57RaRTTQM8WnAh-TSQu1QK9x_w","https://gutibpbuoigchxltzxbb.supabase.co"),$async$azD)
+return A.m(A.ajr("sb_publishable_InFvGwRLGfE1ny3vIdCHzg_krbsKfl6","https://gutibpbuoigchxltzxbb.supabase.co"),$async$azD)
 case 2:if($.Z==null)A.aC9()
 q=$.Z
 q.toString
