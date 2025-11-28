@@ -7,24 +7,27 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:uuid/uuid.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 // Configure via --dart-define; fall back to baked-in publishable/anon keys for deployed apps.
-const _fallbackSupabaseUrl = 'https://gutibpbuoigchxltzxbb.supabase.co';
-const _fallbackSupabaseAnonKey =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd1dGlicGJ1b2lnY2h4bHR6eGJiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMzODQ2NjMsImV4cCI6MjA3ODk2MDY2M30.XX-VHqVtSxJ0xrPFr57RaRTTQM8WnAh-TSQu1QK9x_w';
-
 const supabaseUrl = String.fromEnvironment(
   'SUPABASE_URL',
-  defaultValue: _fallbackSupabaseUrl,
+  defaultValue: '',
 );
 const supabaseAnonKey = String.fromEnvironment(
   'SUPABASE_ANON_KEY',
-  defaultValue: _fallbackSupabaseAnonKey,
+  defaultValue: '',
 );
+
+const currentAppVersion = '0.1.2.1';
+const latestReleaseApi =
+    'https://api.github.com/repos/rifqyhazim22/ai-image-gen-app/releases/latest';
+const latestReleasePage =
+    'https://github.com/rifqyhazim22/ai-image-gen-app/releases/latest';
 
 const Map<String, Map<String, String>> translations = {
   'en': {
@@ -107,6 +110,13 @@ const Map<String, Map<String, String>> translations = {
     'all_downloads': 'All downloads',
     'download_note':
         'iOS: use the XCArchive in release to export/sign. Web bundle is available too.',
+    'update_checking': 'Checking for updates...',
+    'update_available': 'Update available',
+    'update_latest': 'You are on the latest version',
+    'update_button': 'Download update',
+    'current_version': 'Current version',
+    'latest_version': 'Latest version',
+    'update_error': 'Update check failed',
   },
   'id': {
     'title': 'AI Image Gen',
@@ -188,6 +198,13 @@ const Map<String, Map<String, String>> translations = {
     'all_downloads': 'Semua unduhan',
     'download_note':
         'iOS: gunakan XCArchive di rilis untuk export/sign. Paket web juga tersedia.',
+    'update_checking': 'Sedang cek pembaruan...',
+    'update_available': 'Ada pembaruan',
+    'update_latest': 'Aplikasi sudah versi terbaru',
+    'update_button': 'Unduh pembaruan',
+    'current_version': 'Versi saat ini',
+    'latest_version': 'Versi terbaru',
+    'update_error': 'Gagal cek pembaruan',
   },
 };
 
@@ -243,6 +260,12 @@ Widget appLogo({double size = 36}) {
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  if (supabaseUrl.isEmpty || supabaseAnonKey.isEmpty) {
+    throw Exception(
+      'Missing SUPABASE_URL or SUPABASE_ANON_KEY. Set via --dart-define or env.',
+    );
+  }
 
   await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
 
@@ -484,6 +507,10 @@ class _HomePageState extends State<HomePage> {
   static const String _legacyCombinedGroup = 'legacy-combined';
   String? _nickname;
   bool _askedNickname = false;
+  bool _checkingUpdate = false;
+  bool _updateAvailable = false;
+  String? _latestVersion;
+  String? _updateError;
 
   @override
   void initState() {
@@ -493,9 +520,67 @@ class _HomePageState extends State<HomePage> {
     _gallery.clear();
     _groupId = null;
     _loadNickname();
+    _checkForUpdate();
   }
 
   String t(String key) => translate(_lang, key);
+
+  int _compareVersion(String a, String b) {
+    List<int> parse(String v) => v.split('.').map((e) => int.tryParse(e) ?? 0).toList();
+    final pa = parse(a);
+    final pb = parse(b);
+    final len = pa.length > pb.length ? pa.length : pb.length;
+    for (var i = 0; i < len; i++) {
+      final va = i < pa.length ? pa[i] : 0;
+      final vb = i < pb.length ? pb[i] : 0;
+      if (va > vb) return 1;
+      if (va < vb) return -1;
+    }
+    return 0;
+  }
+
+  Future<void> _checkForUpdate() async {
+    if (kIsWeb) return; // hanya native
+    setState(() {
+      _checkingUpdate = true;
+      _updateError = null;
+    });
+    try {
+      final resp = await http.get(
+        Uri.parse(latestReleaseApi),
+        headers: {
+          'Accept': 'application/vnd.github+json',
+          'User-Agent': 'ai-image-gen-app',
+        },
+      );
+      if (resp.statusCode == 200) {
+        final data = jsonDecode(resp.body) as Map<String, dynamic>;
+        final tag = data['tag_name'] as String?;
+        if (tag != null) {
+          final latest = tag.startsWith('v') ? tag.substring(1) : tag;
+          final newer = _compareVersion(latest, currentAppVersion) > 0;
+          setState(() {
+            _latestVersion = latest;
+            _updateAvailable = newer;
+          });
+        }
+      } else {
+        setState(() {
+          _updateError = 'HTTP ${resp.statusCode}';
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _updateError = e.toString();
+      });
+    } finally {
+      if (mounted) {
+        setState(() {
+          _checkingUpdate = false;
+        });
+      }
+    }
+  }
 
   Future<void> _loadNickname() async {
     final prefs = await SharedPreferences.getInstance();
@@ -858,12 +943,73 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Widget _buildUpdateBanner(ThemeData theme) {
+    String status;
+    Widget? action;
+    if (_checkingUpdate) {
+      status = t('update_checking');
+    } else if (_updateError != null) {
+      status = '${t('update_error')}: $_updateError';
+    } else if (_updateAvailable) {
+      status =
+          '${t('update_available')} — ${t('current_version')}: $currentAppVersion, ${t('latest_version')}: ${_latestVersion ?? '?'}';
+    } else {
+      status = t('update_latest');
+    }
+
+    if (_updateAvailable) {
+      action = FilledButton.icon(
+        onPressed: () => launchUrlString(
+          latestReleasePage,
+          mode: LaunchMode.externalApplication,
+        ),
+        icon: const Icon(Icons.system_update_alt),
+        label: Text(t('update_button')),
+      );
+    } else {
+      action = Text(
+        '${t('current_version')}: $currentAppVersion'
+        '${_latestVersion != null ? ' • ${t('latest_version')}: $_latestVersion' : ''}',
+        style: theme.textTheme.bodySmall,
+      );
+    }
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Glass(
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Text(
+                  status,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: _updateAvailable
+                        ? theme.colorScheme.primary
+                        : theme.colorScheme.onSurface,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+              action,
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildChatTab(ThemeData theme) {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          if (!kIsWeb) _buildUpdateBanner(theme),
           Wrap(
             spacing: 8,
             runSpacing: 8,
